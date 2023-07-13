@@ -1,11 +1,10 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text } from "react-native";
+import React from "react";
 
-// receive props from App.js
-export default function Header({title, name}) {
+export default function Header({ name }) {
   return (
     <View>
-      <Text>Welcome to {title} {name}</Text>
+      <Text>Welcome to {name} </Text>
     </View>
   );
 }
