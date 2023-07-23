@@ -1,14 +1,9 @@
-import { View, Text, TextInput, StyleSheet, Alert, Modal } from "react-native";
+import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
 import React from "react";
 import { useState } from "react";
 import PressableButton from "../reusable/PressableButton";
 
-export default function AddEntry({
-  navigation,
-  changeEntryCallBack,
-  modalVisible,
-  hideModal,
-}) {
+export default function AddEntry({ navigation, changeEntryCallBack }) {
   const [calories, setCalories] = useState("");
   const [description, setDescription] = useState("");
 
@@ -42,50 +37,48 @@ export default function AddEntry({
   };
 
   return (
-    <Modal visible={modalVisible} animationType="slide">
-      <View style={styles.screenContainer}>
-        <View style={styles.inputContainer}>
-          <View style={styles.labelContainer}>
-            <Text style={styles.text}>Calories</Text>
-          </View>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.input}
-              onChangeText={setCalories}
-              value={calories}
-              keyboardType="numeric"
-            />
-          </View>
+    <View style={styles.screenContainer}>
+      <View style={styles.inputContainer}>
+        <View style={styles.labelContainer}>
+          <Text style={styles.text}>Calories</Text>
         </View>
-        <View style={styles.inputContainer}>
-          <View style={styles.labelContainer}>
-            <Text style={styles.text}>Description</Text>
-          </View>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={[styles.input, styles.descriptionInput]}
-              onChangeText={setDescription}
-              value={description}
-              multiline
-            />
-          </View>
-        </View>
-        <View style={styles.buttonContainer}>
-          <PressableButton
-            pressableFunction={resetFields}
-            pressedStyle={{ backgroundColor: "purple" }}
-          >
-            <Text style={styles.buttonText}>Reset</Text>
-          </PressableButton>
-          <PressableButton
-            pressableFunction={handleSubmit}
-            pressedStyle={{ backgroundColor: "purple" }}
-          >
-            <Text style={styles.buttonText}>Submit</Text>
-          </PressableButton>
+        <View style={styles.inputWrapper}>
+          <TextInput
+            style={styles.input}
+            onChangeText={setCalories}
+            value={calories}
+            keyboardType="numeric"
+          />
         </View>
       </View>
-    </Modal>
+      <View style={styles.inputContainer}>
+        <View style={styles.labelContainer}>
+          <Text style={styles.text}>Description</Text>
+        </View>
+        <View style={styles.inputWrapper}>
+          <TextInput
+            style={[styles.input, styles.descriptionInput]}
+            onChangeText={setDescription}
+            value={description}
+            multiline
+          />
+        </View>
+      </View>
+      <View style={styles.buttonContainer}>
+        <PressableButton
+          pressableFunction={resetFields}
+          pressedStyle={{ backgroundColor: "purple" }}
+        >
+          <Text style={styles.buttonText}>Reset</Text>
+        </PressableButton>
+        <PressableButton
+          pressableFunction={handleSubmit}
+          pressedStyle={{ backgroundColor: "purple" }}
+        >
+          <Text style={styles.buttonText}>Submit</Text>
+        </PressableButton>
+      </View>
+    </View>
   );
 }
 

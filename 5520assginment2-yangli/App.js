@@ -1,105 +1,79 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import AllEntries from "./components/screens/AllEntries";
 import OverLimit from "./components/screens/OverLimit";
 import AddEntry from "./components/screens/AddEntry";
 import PressableButton from "./components/reusable/PressableButton";
 import { AntDesign } from "@expo/vector-icons";
 
-const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-function AllEntriesStack() {
+function MainTabs() {
   return (
-    <Stack.Navigator
+    <Tab.Navigator
+      initialRouteName="All Entries"
       screenOptions={{
+        tabBarActiveTintColor: "#e91e63",
         headerStyle: { backgroundColor: "#a2a" },
         headerTintColor: "white",
       }}
     >
-      <Stack.Screen
-        name="AllEntriesScreen"
+      <Tab.Screen
+        name="All Entries"
         component={AllEntries}
         options={({ navigation }) => ({
+          tabBarLabel: "All Entries",
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name={"bars"} color={color} size={size} />
+          ),
           headerRight: () => (
             <PressableButton
-              defaultStyle={{ color: "white" }}
-              pressableFunction={() => navigation.navigate("AddEntryScreen")}
+              pressableFunction={() => navigation.navigate("Add Entry")}
+              defaultStyle={{ backgroundColor: "#a2a" }}
+              pressedStyle={{ backgroundColor: "lightgrey" }}
             >
               <AntDesign name="plus" size={24} color="white" />
             </PressableButton>
           ),
         })}
       />
-      <Stack.Screen name="AddEntryScreen" component={AddEntry} />
-    </Stack.Navigator>
-  );
-}
-
-function OverLimitStack() {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: { backgroundColor: "#a2a" },
-        headerTintColor: "white",
-      }}
-    >
-      <Stack.Screen
-        name="OverLimitScreen"
+      <Tab.Screen
+        name="Over-limit Entries"
         component={OverLimit}
         options={({ navigation }) => ({
+          tabBarLabel: "Over-limit Entries",
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="exclamation" color={color} size={size} />
+          ),
           headerRight: () => (
             <PressableButton
-              pressableFunction={() => navigation.navigate("AddEntryScreen")}
+              pressableFunction={() => navigation.navigate("Add Entry")}
+              defaultStyle={{ backgroundColor: "#a2a" }}
+              pressedStyle={{ backgroundColor: "lightgrey" }}
             >
               <AntDesign name="plus" size={24} color="white" />
             </PressableButton>
           ),
         })}
       />
-    </Stack.Navigator>
+    </Tab.Navigator>
   );
 }
 
 export default function App() {
-  const [entries, setEntries] = useState([]);
-
-  function addNewEntry(newEntry) {
-    setEntries((prevEntries) => [...prevEntries, newEntry]);
-  }
-
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => {
-            let iconName;
-            if (route.name === "AllEntriesTab") {
-              iconName = "bars";
-            } else if (route.name === "OverLimitTab") {
-              iconName = "exclamation";
-            }
-            return <AntDesign name={iconName} size={size} color={color} />;
-          },
-        })}
-        tabBarOptions={{
-          activeTintColor: "tomato",
-          inactiveTintColor: "gray",
-        }}
-      >
-        <Tab.Screen name="AllEntriesTab" component={AllEntriesStack} />
-        {(props) => (
-          <AllEntriesStack
-            {...props}
-            entries={entries}
-            addNewEntry={addNewEntry}
-          />
-        )}
-        <Tab.Screen name="OverLimitTab" component={OverLimitStack} />
-      </Tab.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Go Back"
+          component={MainTabs}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="Add Entry" component={AddEntry} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
