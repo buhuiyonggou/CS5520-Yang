@@ -2,10 +2,10 @@ import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
 import React from "react";
 import { useState } from "react";
 import PressableButton from "./PressableButton";
-import { ref, push } from "firebase/database";
-import db from "../firebaseConfiguration";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../firebaseConfiguration";
 
-export default function AddEntry({ navigation }) {
+export default function AddEntry() {
   const [calories, setCalories] = useState("");
   const [description, setDescription] = useState("");
 
@@ -33,7 +33,7 @@ export default function AddEntry({ navigation }) {
       confirmed: false,
     };
 
-    push(ref(db, "entries"), newEntry)
+    addDoc(collection(db, "entries"), newEntry)
       .then(() => {
         resetFields();
       })
