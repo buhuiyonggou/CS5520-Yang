@@ -1,9 +1,11 @@
 import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
 import React from "react";
 import { useState } from "react";
-import PressableButton from "../reusable/PressableButton";
+import PressableButton from "./PressableButton";
+import { ref, push } from "firebase/database";
+import db from "../firebaseConfiguration";
 
-export default function AddEntry({ navigation, changeEntryCallBack }) {
+export default function AddEntry({ navigation }) {
   const [calories, setCalories] = useState("");
   const [description, setDescription] = useState("");
 
@@ -27,13 +29,17 @@ export default function AddEntry({ navigation, changeEntryCallBack }) {
       id: Math.random().toString(),
       calories: parseInt(calories),
       description,
+      overLimit: calories > 500 ? true : false,
       confirmed: false,
     };
 
-    changeEntryCallBack(newEntry);
-    resetFields();
-    navigation.goBack();
-    // navigation.popToTop();
+    push(ref(db, "entries"), newEntry)
+      .then(() => {
+        resetFields();
+      })
+      .catch((error) => {
+        console.error("Failed to add data:", error);
+      });
   };
 
   return (

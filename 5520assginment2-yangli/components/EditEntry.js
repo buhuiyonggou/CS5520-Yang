@@ -3,7 +3,7 @@ import React from "react";
 import PressableButton from "./PressableButton";
 import { AntDesign } from "@expo/vector-icons";
 
-export default function EntryDetails({
+export default function EditEntry({
   route,
   navigation,
   deleteFunction,
